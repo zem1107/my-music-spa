@@ -1,6 +1,10 @@
 export default {
   // static site
   target: 'static',
+  // github pages
+  router: {
+    base: '/my-music-spa/'
+  },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 

@@ -164,4 +164,12 @@ select {
   border-radius: 2rem;
   text-align: center;
 }
+@media (max-width: 576px) {
+  .header {
+    font-size: 1rem;
+  }
+  option {
+    font-size: 1rem;
+  }
+}
 </style>

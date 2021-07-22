@@ -63,4 +63,9 @@ input {
   text-align: center;
   color:darkslategrey;
 }
+@media (max-width: 576px) {
+  .note {
+    font-size: 1rem;
+  }
+}
 </style>

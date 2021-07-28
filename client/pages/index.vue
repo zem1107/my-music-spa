@@ -60,7 +60,11 @@ const scaleList = [
   },
   {
     name: 'Ryo',
-    notes: ['C4', 'D4', 'F4', 'G4', 'A4', 'C5']
+    notes: ['C4', 'D4', 'E4', 'G4', 'A4', 'C5']
+  },
+  {
+    name: 'Ryoin',
+    notes: ['C4', 'Db4', 'E4', 'G4', 'Ab4', 'C5']
   },
   {
     name: 'Yo',
@@ -71,10 +75,51 @@ const scaleList = [
     name: 'In',
     notes: ['C4', 'Db4', 'F4', 'G4', 'Bb4', 'C5'],
     revnotes: ['C4', 'Db4', 'F4', 'G4', 'Ab4', 'C5']
+  },
+  {
+    name: 'Major',
+    notes: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5']
+  },
+  {
+    name: 'Dorian',
+    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'A4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Phrygian',
+    notes: ['C4', 'Db4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Lydian',
+    notes: ['C4', 'D4', 'E4', 'F#4', 'G4', 'A4', 'B4', 'C5']
+  },
+  {
+    name: 'Mixolydian',
+    notes: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Aeolian',
+    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Locrian',
+    notes: ['C4', 'Db4', 'Eb4', 'F4', 'Gb4', 'Ab4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Minor',
+    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Harmonic Minor',
+    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'B4', 'C5']
+  },
+  {
+    name: 'Melodic Minor',
+    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'A4', 'B4', 'C5'],
+    revnotes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
   }
 ]
 
-const colorList = [
+const color5List = [
   'cornflowerblue',
   'violet',
   'darkkhaki',
@@ -83,12 +128,22 @@ const colorList = [
   'cornflowerblue'
 ]
 
+const color7List = [
+  'cornflowerblue',
+  'violet',
+  'darkorange',
+  'darkkhaki',
+  'darkcyan',
+  'salmon',
+  'darkorchid',
+  'cornflowerblue'
+]
+
 export default {
   data () {
     return {
       edit: false,
       scales: scaleList,
-      colors: colorList,
       scaleid: 0
     }
   },
@@ -99,6 +154,12 @@ export default {
     revnotes () {
       const scale = this.scales[this.scaleid]
       return scale.revnotes
+    },
+    colors () {
+      if (this.scales[this.scaleid].notes.length === 6) {
+        return color5List
+      }
+      return color7List
     }
   },
   methods: {

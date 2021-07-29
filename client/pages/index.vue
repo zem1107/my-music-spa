@@ -194,11 +194,9 @@ Note {
   justify-content: center;
 }
 .edit {
-  width: 25%;
   background-color: gray;
 }
 .scale {
-  width: 75%;
   background-color:slategray;
   display: flex;
   justify-content: flex-end;

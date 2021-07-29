@@ -7,15 +7,17 @@
         </span>
       </div>
       <div class="scale header-item">
-        <select v-model="scaleid" class="px-3 py-1 my-2">
-          <option v-for="(scale, index) in scales" :key="index" :value="index">
-            {{ scale.name }}
-          </option>
-        </select>
+        <span>
+          <select v-model="scaleid" class="px-3 py-3 my-0">
+            <option v-for="(scale, index) in scales" :key="index" :value="index">
+              {{ scale.name }}
+            </option>
+          </select>
+        </span>
       </div>
     </div>
     <div class="note-container">
-      <div v-for="(note, index) in notes" :key="index" class="note-set">
+      <div v-for="(note, index) in notes" :key="index" :style="{ width: width }" class="note-set">
         <Note :edit="edit" :note="note" :color="colors[index]" />
         <Note v-if="revnotes && note != revnotes[index]" :edit="edit" :note="revnotes[index]" :color="colors[index]" />
       </div>
@@ -155,6 +157,9 @@ export default {
         return color5List
       }
       return color7List
+    },
+    width () {
+      return 200 / this.scales[this.scaleid].notes.length + '%'
     }
   },
   methods: {
@@ -183,8 +188,18 @@ export default {
   width: 100%;
   display: flex;
 }
+span {
+  color: white;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  /* height: 100%; */
+}
 Note {
   width: 100%;
+  height: 100%;
 }
 .header-item {
   width: 100%;
@@ -196,9 +211,18 @@ Note {
 .edit {
   background-color: gray;
 }
+.edit > span {
+  text-align: center;
+}
 .scale {
   background-color:slategray;
   display: flex;
+  justify-content: flex-end;
+}
+.scale > span {
+  width: 100%;
+  display: flex;
+  align-items: right;
   justify-content: flex-end;
 }
 .note-set {
@@ -206,14 +230,15 @@ Note {
   width: 100%;
   display: flex;
   flex-flow: column;
+  flex-grow: 1;
 }
 select, option {
   background-color: slategray;
   color: white;
 }
 select {
-  width: 100%;
   height: 100%;
+  width: 100%;
   border: none;
   text-align: right;
 }
@@ -261,9 +286,7 @@ option {
     font-size: 1rem;
   }
   .note-set {
-    width: 25%;
     height: 50%;
-    flex-grow: 1;
   }
   .note-container {
     flex-wrap: wrap;

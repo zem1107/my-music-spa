@@ -7,16 +7,11 @@
         </span>
       </div>
       <div class="scale header-item">
-        <span class="mx-4">
-          <select v-model="scaleid" class="px-3 py-1 my-2">
-            <option v-for="(scale, index) in scales" :key="index" :value="index">
-              {{ scale.name }}
-            </option>
-          </select>
-        </span>
-        <span class="mr-4">
-          Scale
-        </span>
+        <select v-model="scaleid" class="px-3 py-1 my-2">
+          <option v-for="(scale, index) in scales" :key="index" :value="index">
+            {{ scale.name }}
+          </option>
+        </select>
       </div>
     </div>
     <div class="note-container">
@@ -31,91 +26,91 @@
 <script>
 const scaleList = [
   {
-    name: 'Major Pentatonic',
+    name: 'Major Pentatonic Scale',
     notes: ['C4', 'D4', 'E4', 'G4', 'A4', 'C5']
   },
   {
-    name: 'Minor Pentatonic',
+    name: 'Minor Pentatonic Scale',
     notes: ['C4', 'Eb4', 'F4', 'G4', 'Bb4', 'C5']
   },
   {
-    name: 'Yonanuki',
+    name: '🇯🇵ヨナ抜き音階',
     notes: ['C4', 'D4', 'E4', 'G4', 'A4', 'C5']
   },
   {
-    name: 'Minyo',
+    name: '🇯🇵民謡音階',
     notes: ['C4', 'Eb4', 'F4', 'G4', 'Bb4', 'C5']
   },
   {
-    name: 'Miyakobushi',
+    name: '🇯🇵都節音階',
     notes: ['C4', 'Db4', 'F4', 'G4', 'Ab4', 'C5']
   },
   {
-    name: 'Ritsu',
+    name: '🇯🇵律音階',
     notes: ['C4', 'D4', 'F4', 'G4', 'A4', 'C5']
   },
   {
-    name: 'Ryukyu',
+    name: '🇯🇵琉球音階',
     notes: ['C4', 'E4', 'F4', 'G4', 'B4', 'C5']
   },
   {
-    name: 'Ryo',
+    name: '🇯🇵呂音階',
     notes: ['C4', 'D4', 'E4', 'G4', 'A4', 'C5']
   },
   {
-    name: 'Ryoin',
+    name: '🇯🇵呂陰音階',
     notes: ['C4', 'Db4', 'E4', 'G4', 'Ab4', 'C5']
   },
   {
-    name: 'Yo',
+    name: '🇯🇵陽音階',
     notes: ['C4', 'D4', 'F4', 'G4', 'Bb4', 'C5'],
     revnotes: ['C4', 'D4', 'F4', 'G4', 'A4', 'C5']
   },
   {
-    name: 'In',
+    name: '🇯🇵陰音階',
     notes: ['C4', 'Db4', 'F4', 'G4', 'Bb4', 'C5'],
     revnotes: ['C4', 'Db4', 'F4', 'G4', 'Ab4', 'C5']
   },
   {
-    name: 'Major',
+    name: 'Major Scale',
     notes: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5']
   },
   {
-    name: 'Dorian',
-    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'A4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Phrygian',
-    notes: ['C4', 'Db4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Lydian',
-    notes: ['C4', 'D4', 'E4', 'F#4', 'G4', 'A4', 'B4', 'C5']
-  },
-  {
-    name: 'Mixolydian',
-    notes: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Aeolian',
+    name: 'Minor Scale',
     notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
   },
   {
-    name: 'Locrian',
-    notes: ['C4', 'Db4', 'Eb4', 'F4', 'Gb4', 'Ab4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Minor',
-    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Harmonic Minor',
+    name: 'Harmonic Minor Scale',
     notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'B4', 'C5']
   },
   {
-    name: 'Melodic Minor',
+    name: 'Melodic Minor Scale',
     notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'A4', 'B4', 'C5'],
     revnotes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Dorian Scale',
+    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'A4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Phrygian Scale',
+    notes: ['C4', 'Db4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Lydian Scale',
+    notes: ['C4', 'D4', 'E4', 'F#4', 'G4', 'A4', 'B4', 'C5']
+  },
+  {
+    name: 'Mixolydian Scale',
+    notes: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Aeolian Scale',
+    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
+  },
+  {
+    name: 'Locrian Scale',
+    notes: ['C4', 'Db4', 'Eb4', 'F4', 'Gb4', 'Ab4', 'Bb4', 'C5']
   }
 ]
 
@@ -181,7 +176,6 @@ export default {
 .header {
   display: flex;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 3rem;
   width: 100%;
 }
 .note-container {
@@ -200,9 +194,11 @@ Note {
   justify-content: center;
 }
 .edit {
+  width: 25%;
   background-color: gray;
 }
 .scale {
+  width: 75%;
   background-color:slategray;
   display: flex;
   justify-content: flex-end;
@@ -217,20 +213,63 @@ select, option {
   background-color: slategray;
   color: white;
 }
+select {
+  width: 100%;
+  height: 100%;
+  border: none;
+  text-align: right;
+}
+/* Extra large devices (large desktops) */
+/* No media query since the extra-large breakpoint has no upper bound on its width */
+.header {
+  font-size: 2rem;
+}
 option {
   font-size: 2rem;
 }
-select {
-  border-color:lightslategrey;
-  border-radius: 2rem;
-  text-align: center;
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+  .header {
+    font-size: 1.8rem;
+  }
+  option {
+    font-size: 1.8rem;
+  }
 }
-@media (max-width: 576px) {
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  .header {
+    font-size: 1.6rem;
+  }
+  option {
+    font-size: 1.6rem;
+  }
+}
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  .header {
+    font-size: 1.3rem;
+  }
+  option {
+    font-size: 1.3rem;
+  }
+}
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
   .header {
     font-size: 1rem;
   }
   option {
     font-size: 1rem;
+  }
+  .note-set {
+    width: 25%;
+    height: 50%;
+    flex-grow: 1;
+  }
+  .note-container {
+    flex-wrap: wrap;
+    flex-flow: wrap-reverse;
   }
 }
 </style>

@@ -48,7 +48,6 @@ export default {
   align-items: center;
   justify-content: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 4rem;
 }
 span {
   color: white;
@@ -63,8 +62,35 @@ input {
   text-align: center;
   color:darkslategrey;
 }
-@media (max-width: 576px) {
+/* Extra large devices (large desktops) */
+/* No media query since the extra-large breakpoint has no upper bound on its width */
+.note {
+    font-size: 2rem;
+  }
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
   .note {
+    font-size: 1.8rem;
+  }
+}
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  .note {
+    font-size: 1.6rem;
+  }
+}
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  .note {
+    font-size: 1.3rem;
+  }
+}
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .header {
+    font-size: 1rem;
+  }
+  option {
     font-size: 1rem;
   }
 }

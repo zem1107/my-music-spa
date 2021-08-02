@@ -1,12 +1,11 @@
 <template>
-  <div class="note" :style="{ backgroundColor: color }" @click="play">
+  <div class="note" :style="{ backgroundColor: color }" @click="playprop()">
     <span v-show="!edit">{{ internalnote }}</span>
     <input v-show="edit" v-model="internalnote" type="text" @click.stop>
   </div>
 </template>
 
 <script>
-import * as Tone from 'tone'
 export default {
   props: {
     edit: Boolean,
@@ -17,6 +16,10 @@ export default {
     color: {
       type: String,
       default: 'cornflowerblue'
+    },
+    play: {
+      type: Function,
+      default: () => {}
     }
   },
   data () {
@@ -30,11 +33,8 @@ export default {
     }
   },
   methods: {
-    play (event) {
-      // create a synth and connect it to the main output (your speakers)
-      const synth = new Tone.Synth().toDestination()
-      // play a middle 'C' for the duration of an 8th note
-      synth.triggerAttackRelease(this.internalnote, '8n')
+    playprop (event) {
+      this.play(this.note)
     }
   }
 }

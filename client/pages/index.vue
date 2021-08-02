@@ -17,15 +17,16 @@
       </div>
     </div>
     <div class="note-container">
-      <div v-for="(note, index) in notes" :key="index" :style="{ width: width }" class="note-set">
-        <Note :edit="edit" :note="note" :color="colors[index]" />
-        <Note v-if="revnotes && note != revnotes[index]" :edit="edit" :note="revnotes[index]" :color="colors[index]" />
+      <div v-for="(note, index) in notes" :key="index" :style="{ width: width, height: height }" class="note-set">
+        <Note :edit="edit" :note="note" :color="colors[index]" :play="play" />
+        <Note v-if="revnotes && note != revnotes[index]" :edit="edit" :note="revnotes[index]" :color="colors[index]" :play="play" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import * as Tone from 'tone'
 const scaleList = [
   {
     name: 'Major Pentatonic Scale',
@@ -136,12 +137,17 @@ const color7List = [
   'cornflowerblue'
 ]
 
+const mediaQuery = window.matchMedia('(max-width: 575.96px)')
+const revMediaQuery = window.matchMedia('(min-width: 576px)')
+
 export default {
   data () {
     return {
       edit: false,
       scales: scaleList,
-      scaleid: 0
+      scaleid: 0,
+      rows: 1,
+      synth: new Tone.Synth().toDestination()
     }
   },
   computed: {
@@ -159,13 +165,39 @@ export default {
       return color7List
     },
     width () {
-      return 200 / this.scales[this.scaleid].notes.length + '%'
+      return this.rows * 100 / this.scales[this.scaleid].notes.length + '%'
+    },
+    height () {
+      return 100 / this.rows + '%'
     }
+  },
+  created () {
+    mediaQuery.addEventListener('change', this.handleMQChange)
+    this.handleMQChange(mediaQuery)
+    revMediaQuery.addEventListener('change', this.handleRevMQChange)
+    this.handleRevMQChange(revMediaQuery)
   },
   methods: {
     toggle (event) {
       const mode = this.edit
       this.edit = !mode
+    },
+    handleMQChange (event) {
+      if (event.matches) {
+        this.rows = 2
+      } else {
+        this.rows = 1
+      }
+    },
+    handleRevMQChange (event) {
+      if (event.matches) {
+        this.rows = 1
+      } else {
+        this.rows = 2
+      }
+    },
+    play (note) {
+      this.synth.triggerAttackRelease(note, '8n')
     }
   }
 }
@@ -187,6 +219,8 @@ export default {
   height: 100%;
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
+  flex-flow: wrap-reverse;
 }
 span {
   color: white;
@@ -195,7 +229,6 @@ span {
   -ms-user-select: none;
   user-select: none;
   width: 100%;
-  /* height: 100%; */
 }
 Note {
   width: 100%;
@@ -231,6 +264,7 @@ Note {
   display: flex;
   flex-flow: column;
   flex-grow: 1;
+  flex-shrink: 1;
 }
 select, option {
   background-color: slategray;
@@ -284,13 +318,6 @@ option {
   }
   option {
     font-size: 1rem;
-  }
-  .note-set {
-    height: 50%;
-  }
-  .note-container {
-    flex-wrap: wrap;
-    flex-flow: wrap-reverse;
   }
 }
 </style>

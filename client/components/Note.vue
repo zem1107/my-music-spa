@@ -1,5 +1,5 @@
 <template>
-  <div class="note" :style="{ backgroundColor: color }" @mousedown="playEmit()">
+  <div class="note" :style="{ backgroundColor: color }" @touchstart="playEmit()" @mousedown="playEmit()">
     <span v-show="!edit">{{ internalnote }}</span>
     <input v-show="edit" v-model="internalnote" type="text" @click.stop>
   </div>

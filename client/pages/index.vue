@@ -18,7 +18,7 @@
     </div>
     <div class="note-container">
       <div v-for="(note, index) in notes" :key="index" :style="{ width: width, height: height }" class="note-set">
-        <Note ref="child-note" :edit="edit" :note="note" :color="colors[index]" @play="play" />
+        <Note :edit="edit" :note="note" :color="colors[index]" @play="play" />
         <Note v-if="revnotes && note != revnotes[index]" :edit="edit" :note="revnotes[index]" :color="colors[index]" />
       </div>
     </div>

@@ -18,8 +18,8 @@
     </div>
     <div class="note-container">
       <div v-for="(note, index) in notes" :key="index" :style="{ width: width, height: height }" class="note-set">
-        <Note :edit="edit" :note="note" :color="colors[index]" :play="play" />
-        <Note v-if="revnotes && note != revnotes[index]" :edit="edit" :note="revnotes[index]" :color="colors[index]" :play="play" />
+        <Note ref="child-note" :edit="edit" :note="note" :color="colors[index]" @play="play" />
+        <Note v-if="revnotes && note != revnotes[index]" :edit="edit" :note="revnotes[index]" :color="colors[index]" />
       </div>
     </div>
   </div>
@@ -137,6 +137,8 @@ const color7List = [
   'cornflowerblue'
 ]
 
+const keyIndexMap = { a: 0, s: 1, d: 2, f: 3, g: 4, h: 5, j: 6, k: 7 }
+
 const mediaQuery = window.matchMedia('(max-width: 575.96px)')
 const revMediaQuery = window.matchMedia('(min-width: 576px)')
 
@@ -177,6 +179,9 @@ export default {
     revMediaQuery.addEventListener('change', this.handleRevMQChange)
     this.handleRevMQChange(revMediaQuery)
   },
+  mounted () {
+    window.addEventListener('keydown', this.keyplay)
+  },
   methods: {
     toggle (event) {
       const mode = this.edit
@@ -198,6 +203,12 @@ export default {
     },
     play (note) {
       this.synth.triggerAttackRelease(note, '8n')
+    },
+    keyplay (event) {
+      const index = keyIndexMap[event.key]
+      if (index !== undefined && index < this.notes.length) {
+        this.play(this.notes[index])
+      }
     }
   }
 }

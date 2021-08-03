@@ -1,5 +1,5 @@
 <template>
-  <div class="note" :style="{ backgroundColor: color }" @click="playprop()">
+  <div class="note" :style="{ backgroundColor: color }" @mousedown="playEmit()">
     <span v-show="!edit">{{ internalnote }}</span>
     <input v-show="edit" v-model="internalnote" type="text" @click.stop>
   </div>
@@ -16,11 +16,12 @@ export default {
     color: {
       type: String,
       default: 'cornflowerblue'
-    },
-    play: {
-      type: Function,
-      default: () => {}
     }
+    // https://techblog.roxx.co.jp/entry/2020/07/09/092955
+    // play: {
+    //   type: Function,
+    //   default: () => {}
+    // }
   },
   data () {
     return {
@@ -33,8 +34,11 @@ export default {
     }
   },
   methods: {
-    playprop (event) {
-      this.play(this.note)
+    // playprop (event) {
+    //   this.play(this.note)
+    // }
+    playEmit () {
+      this.$emit('play', this.internalnote)
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="note" :style="{ backgroundColor: color }" @pointerdown="playEmit()">
+  <div class="note" :style="{ backgroundColor: color }" @pointerdown="attackEmit()" @pointerleave="releaseEmit()" @pointerup="releaseEmit()">
     <span v-show="!edit">{{ internalnote }}</span>
     <input v-show="edit" v-model="internalnote" type="text" @click.stop>
   </div>
@@ -16,6 +16,10 @@ export default {
     color: {
       type: String,
       default: 'cornflowerblue'
+    },
+    sustain: {
+      type: Boolean,
+      default: false
     }
     // https://techblog.roxx.co.jp/entry/2020/07/09/092955
     // play: {
@@ -34,11 +38,20 @@ export default {
     }
   },
   methods: {
-    // playprop (event) {
-    //   this.play(this.note)
-    // }
     playEmit () {
       this.$emit('play', this.internalnote)
+    },
+    attackEmit () {
+      if (this.sustain) {
+        this.$emit('attack', this.internalnote)
+      } else {
+        this.$emit('play', this.internalnote)
+      }
+    },
+    releaseEmit () {
+      if (this.sustain) {
+        this.$emit('release', this.internalnote)
+      }
     }
   }
 }

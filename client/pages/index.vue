@@ -18,8 +18,25 @@
     </div>
     <div class="note-container">
       <div v-for="(note, index) in notes" :key="index" :style="{ width: width, height: height }" class="note-set">
-        <Note :edit="edit" :note="note" :color="colors[index]" @play="play" />
-        <Note v-if="revnotes && note != revnotes[index]" :edit="edit" :note="revnotes[index]" :color="colors[index]" />
+        <Note
+          :edit="edit"
+          :note="note"
+          :color="colors[index]"
+          :sustain="sustain"
+          @attack="attack"
+          @release="release"
+          @play="play"
+        />
+        <Note
+          v-if="revnotes && note != revnotes[index]"
+          :edit="edit"
+          :note="revnotes[index]"
+          :color="colors[index]"
+          :sustain="sustain"
+          @attack="attack"
+          @release="release"
+          @play="play"
+        />
       </div>
     </div>
   </div>
@@ -149,16 +166,25 @@ export default {
       scales: scaleList,
       scaleid: 0,
       rows: 1,
-      synth: new Tone.Synth().toDestination()
+      synth: new Tone.PolySynth().toDestination(),
+      sustain: false,
+      cycle: true
     }
   },
   computed: {
     notes () {
-      return this.scales[this.scaleid].notes
+      const noteList = this.scales[this.scaleid].notes
+      if (!this.cycle) {
+        return noteList.slice(0, -1)
+      }
+      return noteList
     },
     revnotes () {
-      const scale = this.scales[this.scaleid]
-      return scale.revnotes
+      const noteList = this.scales[this.scaleid].revnotes
+      if (!this.cycle && noteList) {
+        return noteList.slice(0, -1)
+      }
+      return noteList
     },
     colors () {
       if (this.scales[this.scaleid].notes.length === 6) {
@@ -204,11 +230,23 @@ export default {
     play (note) {
       this.synth.triggerAttackRelease(note, '8n')
     },
+    attack (note) {
+      this.synth.triggerAttack(note, '8n')
+    },
+    release (note) {
+      const now = Tone.now()
+      this.synth.triggerRelease(note, now + '8n', 0.5)
+    },
     keyplay (event) {
       const index = keyIndexMap[event.key]
       if (index !== undefined && index < this.notes.length) {
-        this.play(this.notes[index])
+        if (event.ctrlKey) {
+          this.play(this.revnotes[index])
+        } else {
+          this.play(this.notes[index])
+        }
       }
+      event.preventDefault()
     }
   }
 }
@@ -290,36 +328,36 @@ select {
 /* Extra large devices (large desktops) */
 /* No media query since the extra-large breakpoint has no upper bound on its width */
 .header {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 option {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 /* Large devices (desktops, less than 1200px) */
 @media (max-width: 1199.98px) {
   .header {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   option {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 }
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
   .header {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
   option {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 }
 /* Small devices (landscape phones, less than 768px) */
 @media (max-width: 767.98px) {
   .header {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
   option {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
 }
 /* Extra small devices (portrait phones, less than 576px) */

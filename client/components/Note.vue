@@ -77,7 +77,10 @@ input {
   height: 5rem;
   width: 100%;
   text-align: center;
-  color:darkslategrey;
+  color: white;
+  background-color: transparent;
+  border-width: 2px;
+  border-color: white;
 }
 /* Extra large devices (large desktops) */
 /* No media query since the extra-large breakpoint has no upper bound on its width */

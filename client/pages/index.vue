@@ -1,9 +1,27 @@
 <template>
   <div class="body">
     <div class="header">
-      <div class="edit header-item" @click="toggle">
+      <!-- <div class="edit header-item px-5" @click="toggle">
         <span>
           {{ edit ? 'Done' : 'Edit' }}
+        </span>
+      </div> -->
+      <div class="tr-label header-item px-3">
+        <span>
+          transpose
+        </span>
+      </div>
+      <div class="tr-btn header-item px-3" @click="decrement">
+        <span>
+          -
+        </span>
+      </div>
+      <div class="tr header-item">
+        <input type="number" min="-36" max="36" :value="transpose">
+      </div>
+      <div class="tr-btn header-item px-3" @click="increment">
+        <span>
+          +
         </span>
       </div>
       <div class="scale header-item">
@@ -167,24 +185,33 @@ export default {
       scaleid: 0,
       rows: 1,
       synth: new Tone.PolySynth().toDestination(),
+      // TODO: not tested
       sustain: false,
-      cycle: true
+      cycle: true,
+      transpose: 0
     }
   },
   computed: {
     notes () {
-      const noteList = this.scales[this.scaleid].notes
-      if (!this.cycle) {
-        return noteList.slice(0, -1)
-      }
-      return noteList
+      return this.scales[this.scaleid].notes.filter((element, index, array) => {
+        if (this.cycle) {
+          return true
+        }
+        return index < array.length - 1
+      }).map((element) => {
+        return Tone.Frequency(element).transpose(this.transpose).toNote()
+      })
     },
     revnotes () {
-      const noteList = this.scales[this.scaleid].revnotes
-      if (!this.cycle && noteList) {
-        return noteList.slice(0, -1)
-      }
-      return noteList
+      const revnotes = this.scales[this.scaleid].revnotes ? this.scales[this.scaleid].revnotes : this.scales[this.scaleid].notes
+      return revnotes.filter((element, index, array) => {
+        if (this.cycle) {
+          return true
+        }
+        return index < array.length - 1
+      }).map((element) => {
+        return Tone.Frequency(element).transpose(this.transpose).toNote()
+      })
     },
     colors () {
       if (this.scales[this.scaleid].notes.length === 6) {
@@ -227,6 +254,12 @@ export default {
         this.rows = 2
       }
     },
+    decrement () {
+      this.transpose--
+    },
+    increment () {
+      this.transpose++
+    },
     play (note) {
       this.synth.triggerAttackRelease(note, '8n')
     },
@@ -246,7 +279,7 @@ export default {
           this.play(this.notes[index])
         }
       }
-      event.preventDefault()
+      // event.preventDefault()
     }
   }
 }
@@ -277,35 +310,66 @@ span {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  width: 100%;
+  /* width: 100%; */
 }
 Note {
   width: 100%;
   height: 100%;
 }
 .header-item {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.edit {
-  background-color: gray;
-}
-.edit > span {
+.header-item > span {
+  /* width: 100%; */
+  display: flex;
+  align-items: right;
+  justify-content: flex-end;
   text-align: center;
+}
+.edit {
+  background-color: slategray;
+  width: 20%;
+}
+/* .edit > span {
+  text-align: center;
+} */
+.tr-btn {
+  background-color:dimgray;
+}
+.tr-label {
+  background-color: slategray;
+}
+.tr input {
+  width: 100%;
+  height: 100%;
+  background-color: slategray;
+  border: none;
+  color: white;
+  text-align: center;
+}
+.tr input::-webkit-outer-spin-button,
+.tr input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.tr input[type=number] {
+  -moz-appearance: textfield;
+}
+.tr {
+  width: 5rem;
+}
+.tr-btn {
+  width: 5rem;
 }
 .scale {
   background-color:slategray;
   display: flex;
   justify-content: flex-end;
-}
-.scale > span {
-  width: 100%;
-  display: flex;
-  align-items: right;
-  justify-content: flex-end;
+  flex-grow: 1
 }
 .note-set {
   height: 100%;

@@ -17,7 +17,7 @@
         </span>
       </div>
       <div class="tr header-item">
-        <input type="number" min="-36" max="36" :value="transpose">
+        <input v-model="transpose" type="number" min="-36" max="36">
       </div>
       <div class="tr-btn header-item px-3" @click="increment">
         <span>

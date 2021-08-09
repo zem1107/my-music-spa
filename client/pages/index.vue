@@ -21,7 +21,7 @@
           TRANSPOSE
         </span>
       </div>
-      <div class="tr-btn header-item px-3" @click.stop="decrement">
+      <div class="tr-btn header-item px-3" @click.stop.prevent="decrement">
         <span>
           -
         </span>
@@ -29,7 +29,7 @@
       <div class="tr header-item">
         <input v-model="transpose" type="number" min="-36" max="36">
       </div>
-      <div class="tr-btn header-item px-3" @click.stop="increment">
+      <div class="tr-btn header-item px-3" @click.stop.prevent="increment">
         <span>
           +
         </span>
@@ -200,7 +200,7 @@ export default {
       sustain: false,
       cycle: true,
       transpose: 0,
-      colorList: [...Array(13).keys()].map(i => this.hsv2rgb([i * 30, 0.6, 0.85])),
+      colorList: [...Array(13).keys()].map(i => this.hsv2rgb([i * 30, 0.5, 0.8])),
       sizeIndex: 0
     }
   },

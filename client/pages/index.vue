@@ -37,7 +37,7 @@
       <div class="scale header-item">
         <span>
           <select v-model="scaleid" class="px-3 py-3 my-0" @change="blur">
-            <option v-for="(scale, index) in scales" :key="index" :value="index">
+            <option v-for="(scale, index) in $store.state.scaleList" :key="index" :value="index">
               {{ scale.name }}
             </option>
           </select>
@@ -51,7 +51,12 @@
     </div>
     <div class="scale-container">
       <div v-for="octave in octaves" :key="octave" class="note-container">
-        <div v-for="(note, index) in transposenotes(notes, octave)" :key="index" :style="{ width: width, height: height }" class="note-set">
+        <div
+          v-for="(note, index) in transposenotes(notes, octave)"
+          :key="index"
+          :style="{ width: width, height: height }"
+          class="note-set"
+        >
           <Note
             :edit="edit"
             :note="note"
@@ -80,104 +85,6 @@
 <script>
 import * as Tone from 'tone'
 // import Color from '../mixins/color'
-const scaleList = [
-  {
-    name: 'Major Pentatonic',
-    notes: ['C4', 'D4', 'E4', 'G4', 'A4', 'C5']
-  },
-  {
-    name: 'Minor Pentatonic',
-    notes: ['C4', 'Eb4', 'F4', 'G4', 'Bb4', 'C5']
-  },
-  {
-    name: '🇯🇵ヨナ抜き音階',
-    notes: ['C4', 'D4', 'E4', 'G4', 'A4', 'C5']
-  },
-  {
-    name: '🇯🇵民謡音階',
-    notes: ['C4', 'Eb4', 'F4', 'G4', 'Bb4', 'C5']
-  },
-  {
-    name: '🇯🇵都節音階',
-    notes: ['C4', 'Db4', 'F4', 'G4', 'Ab4', 'C5']
-  },
-  {
-    name: '🇯🇵律音階',
-    notes: ['C4', 'D4', 'F4', 'G4', 'A4', 'C5']
-  },
-  {
-    name: '🇯🇵琉球音階',
-    notes: ['C4', 'E4', 'F4', 'G4', 'B4', 'C5']
-  },
-  {
-    name: '🇯🇵呂音階',
-    notes: ['C4', 'D4', 'E4', 'G4', 'A4', 'C5']
-  },
-  {
-    name: '🇯🇵呂陰音階',
-    notes: ['C4', 'Db4', 'E4', 'G4', 'Ab4', 'C5']
-  },
-  {
-    name: '🇯🇵陽音階',
-    notes: ['C4', 'D4', 'F4', 'G4', 'Bb4', 'C5'],
-    revnotes: ['C4', 'D4', 'F4', 'G4', 'A4', 'C5']
-  },
-  {
-    name: '🇯🇵陰音階',
-    notes: ['C4', 'Db4', 'F4', 'G4', 'Bb4', 'C5'],
-    revnotes: ['C4', 'Db4', 'F4', 'G4', 'Ab4', 'C5']
-  },
-  {
-    name: 'Major',
-    notes: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5']
-  },
-  {
-    name: 'Minor',
-    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Harmonic Minor',
-    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'B4', 'C5']
-  },
-  {
-    name: 'Melodic Minor',
-    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'A4', 'B4', 'C5'],
-    revnotes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Dorian',
-    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'A4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Phrygian',
-    notes: ['C4', 'Db4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Lydian',
-    notes: ['C4', 'D4', 'E4', 'F#4', 'G4', 'A4', 'B4', 'C5']
-  },
-  {
-    name: 'Mixolydian',
-    notes: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Aeolian',
-    notes: ['C4', 'D4', 'Eb4', 'F4', 'G4', 'Ab4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Locrian',
-    notes: ['C4', 'Db4', 'Eb4', 'F4', 'Gb4', 'Ab4', 'Bb4', 'C5']
-  },
-  {
-    name: 'Oriental',
-    notes: ['C4', 'D4', 'Eb4', 'F#4', 'G4', 'Ab4', 'B4', 'C5']
-  },
-  {
-    name: 'Chromatic',
-    notes: ['C4', 'Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4', 'C5']
-  }
-]
-
 const sizeList = ['S', 'M', 'L']
 const keyIndexMap = { a: 0, s: 1, d: 2, f: 3, g: 4, h: 5, j: 6, k: 7, l: 8, ';': 9, ':': 10, ']': 11 }
 const lowerKeyIndexMap = { z: 0, x: 1, c: 2, v: 3, b: 4, n: 5, m: 6, ',': 7, '.': 8, '/': 9, '\\': 10, shift: 11 }
@@ -192,7 +99,6 @@ export default {
   data () {
     return {
       edit: false,
-      scales: scaleList,
       scaleid: 0,
       rows: 1,
       synth: new Tone.PolySynth().toDestination(),
@@ -206,7 +112,7 @@ export default {
   },
   computed: {
     notes () {
-      return this.scales[this.scaleid].notes.filter((element, index, array) => {
+      return this.$store.state.scaleList[this.scaleid].notes.filter((element, index, array) => {
         if (this.cycle) {
           return true
         }
@@ -216,7 +122,10 @@ export default {
       })
     },
     revnotes () {
-      const revnotes = this.scales[this.scaleid].revnotes ? this.scales[this.scaleid].revnotes : this.scales[this.scaleid].notes
+      const revnotes = this.$store.state.scaleList[this.scaleid].revnotes
+      if (revnotes == null) {
+        return null
+      }
       return revnotes.filter((element, index, array) => {
         if (this.cycle) {
           return true
@@ -245,31 +154,16 @@ export default {
       return octaveList
     },
     colors () {
-      if (this.scales[this.scaleid].notes.length === 6) {
-        return this.colorList.filter((element, index) => {
-          if ([0, 2, 4, 7, 9, 12].includes(index)) {
-            return true
-          }
-          return false
-        }).map((hsv) => {
-          return `rgb(${hsv[0]}, ${hsv[1]}, ${hsv[2]})`
-        })
-      } else if (this.scales[this.scaleid].notes.length === 8) {
-        return this.colorList.filter((element, index) => {
-          if ([0, 2, 4, 5, 7, 9, 11, 12].includes(index)) {
-            return true
-          }
-          return false
-        }).map((hsv) => {
-          return `rgb(${hsv[0]}, ${hsv[1]}, ${hsv[2]})`
-        })
-      }
-      return this.colorList.map((hsv) => {
+      return this.$store.state.scaleList[this.scaleid].notes.map((element, index, array) => {
+        return this.colorList[parseInt(12 * index / (array.length - 1))]
+      }).map((hsv) => {
         return `rgb(${hsv[0]}, ${hsv[1]}, ${hsv[2]})`
       })
     },
     width () {
-      const ceilLength = parseInt((this.scales[this.scaleid].notes.length + this.rows - 1) / this.rows) * this.rows
+      const ceilLength = parseInt(
+        (this.$store.state.scaleList[this.scaleid].notes.length + this.rows - 1) / this.rows
+      ) * this.rows
       return this.rows * 100.0 / ceilLength + '%'
     },
     height () {
@@ -358,6 +252,11 @@ export default {
       }
     },
     transposenote (note, transpose) {
+      if (Array.isArray(note)) {
+        return note.map((element) => {
+          return Tone.Frequency(element).transpose(transpose).toNote()
+        })
+      }
       return Tone.Frequency(note).transpose(transpose).toNote()
     },
     transposenotes (notes, octave) {

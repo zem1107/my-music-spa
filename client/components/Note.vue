@@ -1,6 +1,6 @@
 <template>
   <div class="note" :style="{ backgroundColor: color }" @pointerdown="attackEmit()" @pointerleave="releaseEmit()" @pointerup="releaseEmit()">
-    <span v-show="!edit">{{ internalnote }}</span>
+    <span v-show="!edit">{{ notelabel }}</span>
     <input v-show="edit" v-model="internalnote" type="text" @click.stop>
   </div>
 </template>
@@ -10,7 +10,7 @@ export default {
   props: {
     edit: Boolean,
     note: {
-      type: String,
+      type: [String, Array],
       default: 'C4'
     },
     color: {
@@ -30,6 +30,13 @@ export default {
   data () {
     return {
       internalnote: this.note
+    }
+  },
+  computed: {
+    notelabel () {
+      return Array.isArray(this.internalnote)
+        ? '[' + this.internalnote[0] + ']'
+        : this.internalnote
     }
   },
   watch: {

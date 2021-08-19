@@ -96,29 +96,49 @@ export const state = () => ({
       notes: ['C4', 'Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4', 'C5']
     },
     {
-      name: 'Diatonic Chord',
-      notes: [['C4', 'E4', 'G4'], ['D4', 'F4', 'A4'], ['E4', 'G4', 'B4'], ['F4', 'A4', 'C5'], ['G4', 'B4', 'D5'], ['A4', 'C5', 'E5'], ['B4', 'D5', 'F5'], ['C5', 'E5', 'G5']]
-    },
-    {
-      name: 'Diatonic Chord (Tetrad)',
-      notes: [['C4', 'E4', 'G4', 'B4'], ['D4', 'F4', 'A4', 'C5'], ['E4', 'G4', 'B4', 'D5'], ['F4', 'A4', 'C5', 'E5'], ['G4', 'B4', 'D5', 'F5'], ['A4', 'C5', 'E5', 'G5'], ['B4', 'D5', 'F5', 'A5'], ['C5', 'E5', 'G5', 'B5']]
-    },
-    {
-      name: 'Diatonic Chord Minor',
-      notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'Ab4'], ['Eb4', 'G4', 'Bb4'], ['F4', 'Ab4', 'C5'], ['G4', 'Bb4', 'D5'], ['Ab4', 'C5', 'Eb5'], ['Bb4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']]
-    },
-    {
-      name: 'Diatonic Chord Harmonic Minor',
-      notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'Ab4'], ['Eb4', 'G4', 'B4'], ['F4', 'Ab4', 'C5'], ['G4', 'B4', 'D5'], ['Ab4', 'C5', 'Eb5'], ['B4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']]
-    },
-    {
-      name: 'Diatonic Chord Melodic Minor',
-      notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'A4'], ['Eb4', 'G4', 'B4'], ['F4', 'A4', 'C5'], ['G4', 'B4', 'D5'], ['A4', 'C5', 'Eb5'], ['B4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']]
-    },
-    {
-      name: 'Diatonic Chord + ',
+      name: 'Diatonic',
       notes: [['C4', 'E4', 'G4'], ['D4', 'F4', 'A4'], ['E4', 'G4', 'B4'], ['F4', 'A4', 'C5'], ['G4', 'B4', 'D5'], ['A4', 'C5', 'E5'], ['B4', 'D5', 'F5'], ['C5', 'E5', 'G5']],
-      revnotes: [['C4', 'E4', 'G4', 'Bb4'], ['D4', 'F#4', 'A4', 'C5'], ['E4', 'G#4', 'B4', 'D5'], ['F4', 'A4', 'C5', 'Eb5'], ['G4', 'B4', 'D5', 'F5'], ['A4', 'C#5', 'E5', 'G5'], ['B4', 'D#5', 'F#5', 'A5'], ['C5', 'E5', 'G5', 'B5']]
+      type: 'CHORDS'
+    },
+    {
+      name: 'Tetrad-Diatonic',
+      notes: [['C4', 'E4', 'G4', 'B4'], ['D4', 'F4', 'A4', 'C5'], ['E4', 'G4', 'B4', 'D5'], ['F4', 'A4', 'C5', 'E5'], ['G4', 'B4', 'D5', 'F5'], ['A4', 'C5', 'E5', 'G5'], ['B4', 'D5', 'F5', 'A5'], ['C5', 'E5', 'G5', 'B5']],
+      type: 'CHORDS'
+    },
+    {
+      name: 'Minor-Diatonic',
+      notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'Ab4'], ['Eb4', 'G4', 'Bb4'], ['F4', 'Ab4', 'C5'], ['G4', 'Bb4', 'D5'], ['Ab4', 'C5', 'Eb5'], ['Bb4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']],
+      type: 'CHORDS'
+    },
+    {
+      name: 'Tetrad-Minor-Diatonic',
+      notes: [['C4', 'Eb4', 'G4', 'Bb4'], ['D4', 'F4', 'Ab4', 'C5'], ['Eb4', 'G4', 'Bb4', 'D5'], ['F4', 'Ab4', 'C5', 'Eb5'], ['G4', 'Bb4', 'D5', 'F5'], ['Ab4', 'C5', 'Eb5', 'G5'], ['Bb4', 'D5', 'F5', 'Ab5'], ['C5', 'Eb5', 'G5', 'Bb5']],
+      type: 'CHORDS'
+    },
+    {
+      name: 'Harmonic-Minor-Diatonic',
+      notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'Ab4'], ['Eb4', 'G4', 'B4'], ['F4', 'Ab4', 'C5'], ['G4', 'B4', 'D5'], ['Ab4', 'C5', 'Eb5'], ['B4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']],
+      type: 'CHORDS'
+    },
+    {
+      name: 'Tetrad-Harmonic-Minor-Diatonic',
+      notes: [['C4', 'Eb4', 'G4', 'B4'], ['D4', 'F4', 'Ab4', 'C5'], ['Eb4', 'G4', 'B4', 'D5'], ['F4', 'Ab4', 'C5', 'Eb5'], ['G4', 'B4', 'D5', 'F5'], ['Ab4', 'C5', 'Eb5', 'G5'], ['B4', 'D5', 'F5', 'Ab5'], ['C5', 'Eb5', 'G5', 'B5']],
+      type: 'CHORDS'
+    },
+    {
+      name: 'Melodic-Minor-Diatonic',
+      notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'A4'], ['Eb4', 'G4', 'B4'], ['F4', 'A4', 'C5'], ['G4', 'B4', 'D5'], ['A4', 'C5', 'Eb5'], ['B4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']],
+      type: 'CHORDS'
+    },
+    {
+      name: 'Tetrad-Melodic-Minor-Diatonic',
+      notes: [['C4', 'Eb4', 'G4', 'B4'], ['D4', 'F4', 'A4', 'C5'], ['Eb4', 'G4', 'B4', 'D5'], ['F4', 'A4', 'C5', 'Eb5'], ['G4', 'B4', 'D5', 'F5'], ['A4', 'C5', 'Eb5', 'G5'], ['B4', 'D5', 'F5', 'A5'], ['C5', 'Eb5', 'G5', 'B5']],
+      type: 'CHORDS'
     }
+    // {
+    //   name: 'Diatonic Chord + ',
+    //   notes: [['C4', 'E4', 'G4'], ['D4', 'F4', 'A4'], ['E4', 'G4', 'B4'], ['F4', 'A4', 'C5'], ['G4', 'B4', 'D5'], ['A4', 'C5', 'E5'], ['B4', 'D5', 'F5'], ['C5', 'E5', 'G5']],
+    //   revnotes: [['C4', 'E4', 'G4', 'Bb4'], ['D4', 'F#4', 'A4', 'C5'], ['E4', 'G#4', 'B4', 'D5'], ['F4', 'A4', 'C5', 'E5'], ['G4', 'B4', 'D5', 'F5'], ['A4', 'C#5', 'E5', 'G5'], ['B4', 'D#5', 'F#5', 'A5'], ['C5', 'E5', 'G5', 'B5']]
+    // }
   ]
 })

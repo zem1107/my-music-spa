@@ -45,7 +45,7 @@
       </div>
       <div class="scale-label header-item px-3">
         <span>
-          SCALE
+          {{ type }}
         </span>
       </div>
     </div>
@@ -134,6 +134,9 @@ export default {
       }).map((element) => {
         return this.transposenote(element, this.transpose)
       })
+    },
+    type () {
+      return this.$store.state.scaleList[this.scaleid].type || 'SCALE'
     },
     size () {
       return sizeList[this.sizeIndex]

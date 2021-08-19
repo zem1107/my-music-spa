@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import * as Tone from 'tone'
 export default {
   props: {
     edit: Boolean,
@@ -34,9 +35,33 @@ export default {
   },
   computed: {
     notelabel () {
-      return Array.isArray(this.internalnote)
-        ? '[' + this.internalnote[0] + ']'
-        : this.internalnote
+      if (Array.isArray(this.internalnote)) {
+        let notelabel = ''
+        let first = 0
+        if (this.internalnote.length >= 1) {
+          first = Tone.Frequency(this.internalnote[0]).toMidi()
+          notelabel += this.internalnote[0].slice(0, -1)
+        }
+        if (this.internalnote.length >= 3) {
+          const second = Tone.Frequency(this.internalnote[1]).toMidi()
+          const third = Tone.Frequency(this.internalnote[2]).toMidi()
+          if (third - first === 6) {
+            notelabel += 'dim'
+          } else if (second - first === 3) {
+            notelabel += 'm'
+          }
+        }
+        if (this.internalnote.length >= 4) {
+          const forth = Tone.Frequency(this.internalnote[3]).toMidi()
+          if (forth - first === 11) {
+            notelabel += 'M7'
+          } else if (forth - first === 10) {
+            notelabel += '7'
+          }
+        }
+        return notelabel
+      }
+      return this.internalnote
     }
   },
   watch: {

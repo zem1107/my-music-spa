@@ -101,37 +101,37 @@ export const state = () => ({
       type: 'CHORDS'
     },
     {
-      name: 'Tetrad-Diatonic',
+      name: 'Diatonic [4]',
       notes: [['C4', 'E4', 'G4', 'B4'], ['D4', 'F4', 'A4', 'C5'], ['E4', 'G4', 'B4', 'D5'], ['F4', 'A4', 'C5', 'E5'], ['G4', 'B4', 'D5', 'F5'], ['A4', 'C5', 'E5', 'G5'], ['B4', 'D5', 'F5', 'A5'], ['C5', 'E5', 'G5', 'B5']],
       type: 'CHORDS'
     },
     {
-      name: 'Minor-Diatonic',
+      name: 'Minor Diatonic',
       notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'Ab4'], ['Eb4', 'G4', 'Bb4'], ['F4', 'Ab4', 'C5'], ['G4', 'Bb4', 'D5'], ['Ab4', 'C5', 'Eb5'], ['Bb4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']],
       type: 'CHORDS'
     },
     {
-      name: 'Tetrad-Minor-Diatonic',
+      name: 'Minor Diatonic [4]',
       notes: [['C4', 'Eb4', 'G4', 'Bb4'], ['D4', 'F4', 'Ab4', 'C5'], ['Eb4', 'G4', 'Bb4', 'D5'], ['F4', 'Ab4', 'C5', 'Eb5'], ['G4', 'Bb4', 'D5', 'F5'], ['Ab4', 'C5', 'Eb5', 'G5'], ['Bb4', 'D5', 'F5', 'Ab5'], ['C5', 'Eb5', 'G5', 'Bb5']],
       type: 'CHORDS'
     },
     {
-      name: 'Harmonic-Minor-Diatonic',
+      name: 'Harmonic Minor Diatonic',
       notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'Ab4'], ['Eb4', 'G4', 'B4'], ['F4', 'Ab4', 'C5'], ['G4', 'B4', 'D5'], ['Ab4', 'C5', 'Eb5'], ['B4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']],
       type: 'CHORDS'
     },
     {
-      name: 'Tetrad-Harmonic-Minor-Diatonic',
+      name: 'Harmonic Minor Diatonic [4]',
       notes: [['C4', 'Eb4', 'G4', 'B4'], ['D4', 'F4', 'Ab4', 'C5'], ['Eb4', 'G4', 'B4', 'D5'], ['F4', 'Ab4', 'C5', 'Eb5'], ['G4', 'B4', 'D5', 'F5'], ['Ab4', 'C5', 'Eb5', 'G5'], ['B4', 'D5', 'F5', 'Ab5'], ['C5', 'Eb5', 'G5', 'B5']],
       type: 'CHORDS'
     },
     {
-      name: 'Melodic-Minor-Diatonic',
+      name: 'Melodic Minor Diatonic',
       notes: [['C4', 'Eb4', 'G4'], ['D4', 'F4', 'A4'], ['Eb4', 'G4', 'B4'], ['F4', 'A4', 'C5'], ['G4', 'B4', 'D5'], ['A4', 'C5', 'Eb5'], ['B4', 'D5', 'F5'], ['C5', 'Eb5', 'G5']],
       type: 'CHORDS'
     },
     {
-      name: 'Tetrad-Melodic-Minor-Diatonic',
+      name: 'Melodic Minor Diatonic [4]',
       notes: [['C4', 'Eb4', 'G4', 'B4'], ['D4', 'F4', 'A4', 'C5'], ['Eb4', 'G4', 'B4', 'D5'], ['F4', 'A4', 'C5', 'Eb5'], ['G4', 'B4', 'D5', 'F5'], ['A4', 'C5', 'Eb5', 'G5'], ['B4', 'D5', 'F5', 'A5'], ['C5', 'Eb5', 'G5', 'B5']],
       type: 'CHORDS'
     },

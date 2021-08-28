@@ -50,34 +50,35 @@
       </div>
     </div>
     <div class="scale-container">
-      <div v-for="octave in octaves" :key="octave" class="note-container">
-        <div
-          v-for="(note, index) in transposenotes(notes, octave)"
-          :key="index"
-          :style="{ width: width, height: height }"
-          class="note-set"
-        >
-          <Note
-            :edit="edit"
-            :note="note"
-            :color="colors[index]"
-            :sustain="sustain"
-            @attack="attack"
-            @release="release"
-            @play="play"
-          />
-          <Note
-            v-if="revnotes && note != transposenotes(revnotes, octave)[index]"
-            :edit="edit"
-            :note="transposenotes(revnotes, octave)[index]"
-            :color="colors[index]"
-            :sustain="sustain"
-            @attack="attack"
-            @release="release"
-            @play="play"
-          />
-        </div>
-      </div>
+      <Scale
+        v-for="octave in octaves"
+        :key="octave"
+        :notes="transposenotes(notes, octave)"
+        :revnotes="revnotes && transposenotes(revnotes, octave)"
+        :width="width"
+        :height="height"
+        :colors="colors"
+        :edit="edit"
+        :sustain="sustain"
+        @attack="attack"
+        @release="release"
+        @play="play"
+      />
+    </div>
+    <div v-if="base" class="scale-container base-scale-container">
+      <Scale
+        v-if="base"
+        :notes="transposenotes(basenotes, -1)"
+        :revnotes="baserevnotes && transposenotes(baserevnotes, -1)"
+        :width="baseWidth"
+        :height="height"
+        :colors="baseColors"
+        :edit="edit"
+        :sustain="sustain"
+        @attack="attack"
+        @release="release"
+        @play="play"
+      />
     </div>
   </div>
 </template>
@@ -85,10 +86,11 @@
 <script>
 import * as Tone from 'tone'
 // import Color from '../mixins/color'
-const sizeList = ['S', 'M', 'L']
+const sizeList = ['S', 'M', 'L', 'X']
 const keyIndexMap = { a: 0, s: 1, d: 2, f: 3, g: 4, h: 5, j: 6, k: 7, l: 8, ';': 9, ':': 10, ']': 11 }
 const lowerKeyIndexMap = { z: 0, x: 1, c: 2, v: 3, b: 4, n: 5, m: 6, ',': 7, '.': 8, '/': 9, '\\': 10, shift: 11 }
 const upperKeyIndexMap = { q: 0, w: 1, e: 2, r: 3, t: 4, y: 5, u: 6, i: 7, o: 8, p: 9, '@': 10, '[': 11 }
+const baseKeyIndexMap = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8 }
 
 const mediaQuery = window.matchMedia('(max-width: 575.96px)')
 const revMediaQuery = window.matchMedia('(min-width: 576px)')
@@ -100,14 +102,15 @@ export default {
     return {
       edit: false,
       scaleid: 0,
-      rows: 1,
+      rows: 1, // responsive
       synth: new Tone.PolySynth().toDestination(),
       // TODO: not tested
       sustain: false,
       cycle: true,
       transpose: 0,
       colorList: [...Array(13).keys()].map(i => this.hsv2rgb([i * 30, 0.5, 0.8])),
-      sizeIndex: 0
+      sizeIndex: 0,
+      base: false
     }
   },
   computed: {
@@ -135,6 +138,43 @@ export default {
         return this.transposenote(element, this.transpose)
       })
     },
+    basenotes () {
+      if (this.$store.state.scaleList[this.scaleid].base == null) {
+        return this.$store.state.scaleList.find(element => element.name === 'Chromatic'
+        ).notes.filter((element, index, array) => {
+          if (this.cycle) {
+            return true
+          }
+          return index < array.length - 1
+        }).map((element) => {
+          return this.transposenote(element, this.transpose)
+        })
+      }
+      return this.$store.state.scaleList[this.scaleid].base.notes.filter((element, index, array) => {
+        if (this.cycle) {
+          return true
+        }
+        return index < array.length - 1
+      }).map((element) => {
+        return this.transposenote(element, this.transpose)
+      })
+    },
+    baserevnotes () {
+      if (this.$store.state.scaleList[this.scaleid].base == null) {
+        return null
+      } else if (this.$store.state.scaleList[this.scaleid].base.revnotes == null) {
+        return null
+      } else {
+        return this.$store.state.scaleList[this.scaleid].base.revnotes.filter((element, index, array) => {
+          if (this.cycle) {
+            return true
+          }
+          return index < array.length - 1
+        }).map((element) => {
+          return this.transposenote(element, this.transpose)
+        })
+      }
+    },
     type () {
       return this.$store.state.scaleList[this.scaleid].type || 'SCALE'
     },
@@ -153,6 +193,9 @@ export default {
         case 2:
           octaveList = [-1, 0, 1]
           break
+        case 3:
+          octaveList = [0, 1]
+          break
       }
       return octaveList
     },
@@ -163,9 +206,31 @@ export default {
         return `rgb(${hsv[0]}, ${hsv[1]}, ${hsv[2]})`
       })
     },
+    baseColors () {
+      if (this.$store.state.scaleList[this.scaleid].base == null) {
+        return this.colorList.map((hsv) => {
+          return `rgb(${hsv[0]}, ${hsv[1]}, ${hsv[2]})`
+        })
+      }
+      return this.$store.state.scaleList[this.scaleid].base.notes.map((element, index, array) => {
+        return this.colorList[parseInt(12 * index / (array.length - 1))]
+      }).map((hsv) => {
+        return `rgb(${hsv[0]}, ${hsv[1]}, ${hsv[2]})`
+      })
+    },
     width () {
       const ceilLength = parseInt(
         (this.$store.state.scaleList[this.scaleid].notes.length + this.rows - 1) / this.rows
+      ) * this.rows
+      return this.rows * 100.0 / ceilLength + '%'
+    },
+    baseWidth () {
+      if (this.$store.state.scaleList[this.scaleid].base == null) {
+        const ceilLength = parseInt((12 + this.rows) / this.rows) * this.rows
+        return this.rows * 100.0 / ceilLength + '%'
+      }
+      const ceilLength = parseInt(
+        (this.$store.state.scaleList[this.scaleid].base.notes.length + this.rows - 1) / this.rows
       ) * this.rows
       return this.rows * 100.0 / ceilLength + '%'
     },
@@ -202,7 +267,12 @@ export default {
       }
     },
     resize () {
-      this.sizeIndex = (this.sizeIndex + 1) % 3
+      this.sizeIndex = (this.sizeIndex + 1) % 4
+      if (this.sizeIndex === 3) {
+        this.base = true
+      } else {
+        this.base = false
+      }
       // if (this.sizeIndex in [1, 2]) {
       //   this.cycle = false
       // } else {
@@ -251,6 +321,14 @@ export default {
           this.play(this.transposenote(this.revnotes[upperIndex], 12))
         } else {
           this.play(this.transposenote(this.notes[upperIndex], 12))
+        }
+      }
+      const baseIndex = baseKeyIndexMap[event.key]
+      if (baseIndex !== undefined && baseIndex < this.basenotes.length) {
+        if (event.ctrlKey) {
+          this.play(this.transposenote(this.baserevnotes[baseIndex], -12))
+        } else {
+          this.play(this.transposenote(this.basenotes[baseIndex], -12))
         }
       }
     },
@@ -330,17 +408,15 @@ export default {
   width: 100%;
 }
 .scale-container {
-  height: 100%;
+  height: 0%;
   width: 100%;
   display: flex;
   flex-flow: column-reverse;
+  flex-grow: 2;
 }
-.note-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  flex-flow: wrap-reverse;
+.base-scale-container {
+  height: 0%;
+  flex-grow: 1;
 }
 span {
   color: white;
@@ -350,7 +426,7 @@ span {
   user-select: none;
   /* width: 100%; */
 }
-Note {
+Scale {
   width: 100%;
   height: 100%;
 }
@@ -406,14 +482,6 @@ Note {
 }
 .scale span {
   width: 100%;
-}
-.note-set {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-flow: column;
-  /* flex-grow: 1; */
-  flex-shrink: 1;
 }
 select, option {
   background-color: slategray;

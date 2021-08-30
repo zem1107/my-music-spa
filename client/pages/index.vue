@@ -22,17 +22,13 @@
         </span>
       </div>
       <div class="tr-btn header-item px-3" @click.stop.prevent="decrement">
-        <span>
-          -
-        </span>
+        <img src="~/static/svg/minus.svg" width="100%" height="100%">
       </div>
       <div class="tr header-item">
         <input v-model="transpose" type="number" min="-36" max="36">
       </div>
       <div class="tr-btn header-item px-3" @click.stop.prevent="increment">
-        <span>
-          +
-        </span>
+        <img src="~/static/svg/plus.svg" width="100%" height="100%">
       </div>
       <div class="scale header-item">
         <span>

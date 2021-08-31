@@ -22,13 +22,17 @@
         </span>
       </div>
       <div class="tr-btn header-item px-3" @click.stop.prevent="decrement">
-        <img src="~/static/svg/minus.svg" width="100%" height="100%">
+        <span>
+          <img src="~/static/svg/minus.svg" width="60%" height="60%">
+        </span>
       </div>
       <div class="tr header-item">
         <input v-model="transpose" type="number" min="-36" max="36">
       </div>
       <div class="tr-btn header-item px-3" @click.stop.prevent="increment">
-        <img src="~/static/svg/plus.svg" width="100%" height="100%">
+        <span>
+          <img src="~/static/svg/plus.svg" width="60%" height="60%">
+        </span>
       </div>
       <div class="scale header-item">
         <span>
@@ -48,6 +52,7 @@
     <div class="scale-container">
       <Scale
         v-for="octave in octaves"
+        :ref="'scale'"
         :key="octave"
         :notes="transposenotes(notes, octave)"
         :revnotes="revnotes && transposenotes(revnotes, octave)"
@@ -64,6 +69,7 @@
     <div v-if="base" class="scale-container base-scale-container">
       <Scale
         v-if="base"
+        :ref="'base-scale'"
         :notes="transposenotes(basenotes, -1)"
         :revnotes="baserevnotes && transposenotes(baserevnotes, -1)"
         :width="baseWidth"
@@ -297,27 +303,15 @@ export default {
     keyplay (event) {
       const index = keyIndexMap[event.key]
       if (index !== undefined && index < this.notes.length) {
-        if (event.ctrlKey) {
-          this.play(this.revnotes[index])
-        } else {
-          this.play(this.notes[index])
-        }
+        this.$refs.scale[0].keyplay(index, event.ctrlKey)
       }
       const lowerIndex = lowerKeyIndexMap[event.key]
-      if (lowerIndex !== undefined && lowerIndex < this.notes.length) {
-        if (event.ctrlKey) {
-          this.play(this.transposenote(this.revnotes[lowerIndex], -12))
-        } else {
-          this.play(this.transposenote(this.notes[lowerIndex], -12))
-        }
+      if (this.sizeIndex === 2 && lowerIndex !== undefined && lowerIndex < this.notes.length) {
+        this.$refs.scale[1].keyplay(index, event.ctrlKey)
       }
       const upperIndex = upperKeyIndexMap[event.key]
-      if (upperIndex !== undefined && upperIndex < this.notes.length) {
-        if (event.ctrlKey) {
-          this.play(this.transposenote(this.revnotes[upperIndex], 12))
-        } else {
-          this.play(this.transposenote(this.notes[upperIndex], 12))
-        }
+      if (this.sizeIndex > 0 && upperIndex !== undefined && upperIndex < this.notes.length) {
+        this.$refs.scale[1].keyplay(index, event.ctrlKey)
       }
       const baseIndex = baseKeyIndexMap[event.key]
       if (baseIndex !== undefined && baseIndex < this.basenotes.length) {
@@ -438,8 +432,11 @@ Scale {
   /* width: 100%; */
   display: flex;
   align-items: right;
-  justify-content: flex-end;
+  justify-content: center;
   text-align: center;
+}
+.header-item.scale > span {
+  justify-content: flex-end;
 }
 .edit {
   width: 20%;

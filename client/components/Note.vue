@@ -1,7 +1,7 @@
 <template>
-  <div class="note" :style="{ backgroundColor: color }" @pointerdown="attack()" @pointerleave="release()" @pointerup="release()">
-    <span v-show="!edit">{{ notelabel }}</span>
-    <input v-show="edit" v-model="internalnote" type="text" @click.stop>
+  <div class="note" :style="{ backgroundColor: active ? 'lightgray' : color }" @pointerdown="attack" @pointerleave="release" @pointerup="release">
+    <span>{{ notelabel }}</span>
+    <!-- <input v-show="edit" v-model="internalnote" type="text" @click.stop> -->
   </div>
 </template>
 
@@ -30,7 +30,8 @@ export default {
   },
   data () {
     return {
-      internalnote: this.note
+      internalnote: this.note,
+      active: false
     }
   },
   computed: {
@@ -74,13 +75,15 @@ export default {
       this.$emit('play', this.internalnote)
     },
     attack () {
+      this.active = true
       if (this.sustain) {
         this.$emit('attack', this.internalnote)
       } else {
         this.$emit('play', this.internalnote)
       }
     },
-    release () {
+    release (event) {
+      this.active = false
       if (this.sustain) {
         this.$emit('release', this.internalnote)
       }
@@ -113,6 +116,9 @@ input {
   background-color: transparent;
   border-width: 2px;
   border-color: white;
+}
+.active {
+  background-color: white;
 }
 /* Extra large devices (large desktops) */
 /* No media query since the extra-large breakpoint has no upper bound on its width */

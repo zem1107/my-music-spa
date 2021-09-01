@@ -52,7 +52,7 @@
     <div class="scale-container">
       <Scale
         v-for="octave in octaves"
-        :ref="'scale'"
+        :ref="'scale' + octave"
         :key="octave"
         :notes="transposenotes(notes, octave)"
         :revnotes="revnotes && transposenotes(revnotes, octave)"
@@ -69,7 +69,7 @@
     <div v-if="base" class="scale-container base-scale-container">
       <Scale
         v-if="base"
-        :ref="'base-scale'"
+        :ref="'basescale'"
         :notes="transposenotes(basenotes, -1)"
         :revnotes="baserevnotes && transposenotes(baserevnotes, -1)"
         :width="baseWidth"
@@ -247,7 +247,8 @@ export default {
     this.handleRevMQChange(revMediaQuery)
   },
   mounted () {
-    window.addEventListener('keydown', this.keyplay)
+    window.onkeydown = this.keyattack
+    window.onkeyup = this.keyrelease
   },
   methods: {
     toggle (event) {
@@ -300,26 +301,29 @@ export default {
       const now = Tone.now()
       this.synth.triggerRelease(note, now + '8n', 0.5)
     },
-    keyplay (event) {
+    keyattack (event) {
+      this.keyplay(event)
+    },
+    keyrelease (event) {
+      this.keyplay(event, true)
+    },
+    keyplay (event, release = false) {
+      event.preventDefault()
       const index = keyIndexMap[event.key]
       if (index !== undefined && index < this.notes.length) {
-        this.$refs.scale[0].keyplay(index, event.ctrlKey)
+        this.$refs.scale0[0].keyplay(index, event.ctrlKey, release)
       }
       const lowerIndex = lowerKeyIndexMap[event.key]
       if (this.sizeIndex === 2 && lowerIndex !== undefined && lowerIndex < this.notes.length) {
-        this.$refs.scale[1].keyplay(index, event.ctrlKey)
+        this.$refs['scale-1'][0].keyplay(lowerIndex, event.ctrlKey, release)
       }
       const upperIndex = upperKeyIndexMap[event.key]
       if (this.sizeIndex > 0 && upperIndex !== undefined && upperIndex < this.notes.length) {
-        this.$refs.scale[1].keyplay(index, event.ctrlKey)
+        this.$refs.scale1[0].keyplay(upperIndex, event.ctrlKey, release)
       }
       const baseIndex = baseKeyIndexMap[event.key]
-      if (baseIndex !== undefined && baseIndex < this.basenotes.length) {
-        if (event.ctrlKey) {
-          this.play(this.transposenote(this.baserevnotes[baseIndex], -12))
-        } else {
-          this.play(this.transposenote(this.basenotes[baseIndex], -12))
-        }
+      if (this.sizeIndex === 3 && baseIndex !== undefined && baseIndex < this.basenotes.length) {
+        this.$refs.basescale.keyplay(baseIndex, event.ctrlKey, release)
       }
     },
     transposenote (note, transpose) {

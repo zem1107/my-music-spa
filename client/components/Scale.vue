@@ -7,7 +7,7 @@
       class="note-set"
     >
       <Note
-        :ref="'note'"
+        :ref="'note' + index"
         :edit="edit"
         :note="note"
         :color="colors[index]"
@@ -18,7 +18,7 @@
       />
       <Note
         v-if="revnotes && note != revnotes[index]"
-        :ref="'revnote'"
+        :ref="'revnote' + index"
         :edit="edit"
         :note="revnotes[index]"
         :color="colors[index]"
@@ -76,19 +76,16 @@ export default {
         this.$emit('release', note)
       }
     },
-    keyplay (index, rev) {
-      if (rev) {
-        const childNote = this.$refs.revnote[index]
-        childNote.attack()
-        setInterval(() => {
-          childNote.release()
-        }, 300)
+    keyplay (index, rev, release) {
+      if (release) {
+        if (this.revnotes && this.$refs['revnote' + index]) {
+          this.$refs['revnote' + index][0].release()
+        }
+        this.$refs['note' + index][0].release()
+      } else if (rev) {
+        this.$refs['revnote' + index][0].attack()
       } else {
-        const childNote = this.$refs.note[index]
-        childNote.attack()
-        setInterval(() => {
-          childNote.release()
-        }, 300)
+        this.$refs['note' + index][0].attack()
       }
     }
   }

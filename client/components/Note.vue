@@ -46,10 +46,11 @@ export default {
         if (this.internalnote.length >= 3) {
           const second = Tone.Frequency(this.internalnote[1]).toMidi()
           const third = Tone.Frequency(this.internalnote[2]).toMidi()
-          if (third - first === 6) {
-            notelabel += 'dim'
-          } else if (second - first === 3) {
+          if (second - first === 3) {
             notelabel += 'm'
+          }
+          if (third - first === 6) {
+            notelabel += 'b5'
           }
         }
         if (this.internalnote.length >= 4) {

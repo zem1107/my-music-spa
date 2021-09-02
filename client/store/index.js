@@ -1,4 +1,5 @@
 export const state = () => ({
+  pointerdown: false,
   scaleList: [
     {
       name: 'Major Pentatonic',
@@ -179,3 +180,9 @@ export const state = () => ({
     }
   ]
 })
+
+export const mutations = {
+  setpointerdown (state, pointerdown) {
+    state.pointerdown = pointerdown
+  }
+}

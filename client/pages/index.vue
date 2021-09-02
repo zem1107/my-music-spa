@@ -89,10 +89,26 @@
 import * as Tone from 'tone'
 // import Color from '../mixins/color'
 const sizeList = ['S', 'M', 'L', 'X']
-const keyIndexMap = { a: 0, s: 1, d: 2, f: 3, g: 4, h: 5, j: 6, k: 7, l: 8, ';': 9, ':': 10, ']': 11 }
-const lowerKeyIndexMap = { z: 0, x: 1, c: 2, v: 3, b: 4, n: 5, m: 6, ',': 7, '.': 8, '/': 9, '\\': 10, shift: 11 }
-const upperKeyIndexMap = { q: 0, w: 1, e: 2, r: 3, t: 4, y: 5, u: 6, i: 7, o: 8, p: 9, '@': 10, '[': 11 }
-const baseKeyIndexMap = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8 }
+const keyList = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', ':', ']']
+const keyIndexMap = {}
+keyList.forEach((element, index) => {
+  keyIndexMap[element] = index
+})
+const lowerKeyList = ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\\']
+const lowerKeyIndexMap = {}
+lowerKeyList.forEach((element, index) => {
+  lowerKeyIndexMap[element] = index
+})
+const upperKeyList = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '@', '[']
+const upperKeyIndexMap = {}
+upperKeyList.forEach((element, index) => {
+  upperKeyIndexMap[element] = index
+})
+const baseKeyList = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const baseKeyIndexMap = {}
+baseKeyList.forEach((element, index) => {
+  baseKeyIndexMap[element] = index
+})
 
 const mediaQuery = window.matchMedia('(max-width: 575.96px)')
 const revMediaQuery = window.matchMedia('(min-width: 576px)')
@@ -249,6 +265,8 @@ export default {
   mounted () {
     window.onkeydown = this.keyattack
     window.onkeyup = this.keyrelease
+    window.onpointerdown = () => { this.$store.commit('setpointerdown', true) }
+    window.onpointerup = () => { this.$store.commit('setpointerdown', false) }
   },
   methods: {
     toggle (event) {
@@ -308,18 +326,20 @@ export default {
       this.keyplay(event, true)
     },
     keyplay (event, release = false) {
-      event.preventDefault()
       const index = keyIndexMap[event.key]
       if (index !== undefined && index < this.notes.length) {
         this.$refs.scale0[0].keyplay(index, event.ctrlKey, release)
+        event.preventDefault()
       }
       const lowerIndex = lowerKeyIndexMap[event.key]
       if (this.sizeIndex === 2 && lowerIndex !== undefined && lowerIndex < this.notes.length) {
         this.$refs['scale-1'][0].keyplay(lowerIndex, event.ctrlKey, release)
+        event.preventDefault()
       }
       const upperIndex = upperKeyIndexMap[event.key]
       if (this.sizeIndex > 0 && upperIndex !== undefined && upperIndex < this.notes.length) {
         this.$refs.scale1[0].keyplay(upperIndex, event.ctrlKey, release)
+        event.preventDefault()
       }
       const baseIndex = baseKeyIndexMap[event.key]
       if (this.sizeIndex === 3 && baseIndex !== undefined && baseIndex < this.basenotes.length) {

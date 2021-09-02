@@ -1,5 +1,12 @@
 <template>
-  <div class="note" :style="{ backgroundColor: active ? 'lightgray' : color }" @pointerdown="attack" @pointerleave="release" @pointerup="release">
+  <div
+    class="note"
+    :style="{ backgroundColor: active ? 'lightgray' : color }"
+    @pointerdown="attack"
+    @pointerenter="attackenter"
+    @pointerleave="release"
+    @pointerup="release"
+  >
     <span>{{ notelabel }}</span>
     <!-- <input v-show="edit" v-model="internalnote" type="text" @click.stop> -->
   </div>
@@ -75,7 +82,7 @@ export default {
     play () {
       this.$emit('play', this.internalnote)
     },
-    attack () {
+    attack (event) {
       this.active = true
       if (this.sustain) {
         this.$emit('attack', this.internalnote)
@@ -83,7 +90,12 @@ export default {
         this.$emit('play', this.internalnote)
       }
     },
-    release (event) {
+    attackenter (event) {
+      if (this.$store.state.pointerdown) {
+        this.attack(event)
+      }
+    },
+    release () {
       this.active = false
       if (this.sustain) {
         this.$emit('release', this.internalnote)

@@ -82,7 +82,7 @@ export default {
           this.$refs['revnote' + index][0].release()
         }
         this.$refs['note' + index][0].release()
-      } else if (rev) {
+      } else if (rev && this.$refs['revnote' + index]) {
         this.$refs['revnote' + index][0].attack()
       } else {
         this.$refs['note' + index][0].attack()

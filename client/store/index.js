@@ -1,5 +1,6 @@
 export const state = () => ({
   pointerdown: false,
+  currentnote: null,
   scaleList: [
     {
       name: 'Major Pentatonic',
@@ -184,5 +185,8 @@ export const state = () => ({
 export const mutations = {
   setpointerdown (state, pointerdown) {
     state.pointerdown = pointerdown
+  },
+  setcurrentnote (state, currentnote) {
+    state.currentnote = currentnote
   }
 }

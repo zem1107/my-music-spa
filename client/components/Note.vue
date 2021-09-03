@@ -3,7 +3,7 @@
     class="note"
     :style="{ backgroundColor: active ? 'lightgray' : color }"
     @pointerdown="attack"
-    @pointerenter="attackenter"
+    @pointermove="attackmove"
     @pointerleave="release"
     @pointerup="release"
   >
@@ -84,14 +84,15 @@ export default {
     },
     attack (event) {
       this.active = true
+      this.$store.commit('setcurrentnote', this.internalnote)
       if (this.sustain) {
         this.$emit('attack', this.internalnote)
       } else {
         this.$emit('play', this.internalnote)
       }
     },
-    attackenter (event) {
-      if (this.$store.state.pointerdown) {
+    attackmove (event) {
+      if (this.$store.state.pointerdown && this.$store.state.currentnote !== this.internalnote) {
         this.attack(event)
       }
     },

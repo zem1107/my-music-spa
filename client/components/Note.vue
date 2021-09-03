@@ -3,7 +3,7 @@
     class="note"
     :style="{ backgroundColor: active ? 'lightgray' : color }"
     @pointerdown="attack"
-    @pointermove="attackmove"
+    @pointerenter="attackenter"
     @pointerleave="release"
     @pointerup="release"
   >
@@ -83,16 +83,19 @@ export default {
       this.$emit('play', this.internalnote)
     },
     attack (event) {
+      // https://stackoverflow.com/questions/27908339/js-touch-equivalent-for-mouseenter
+      if (event) {
+        event.target.releasePointerCapture(event.pointerId)
+      }
       this.active = true
-      this.$store.commit('setcurrentnote', this.internalnote)
       if (this.sustain) {
         this.$emit('attack', this.internalnote)
       } else {
         this.$emit('play', this.internalnote)
       }
     },
-    attackmove (event) {
-      if (this.$store.state.pointerdown && this.$store.state.currentnote !== this.internalnote) {
+    attackenter (event) {
+      if (this.$store.state.pointerdown) {
         this.attack(event)
       }
     },
@@ -107,6 +110,7 @@ export default {
 </script>
 
 <style scoped>
+*{ touch-action: none; }
 .note {
   height: 100%;
   width: 100%;
